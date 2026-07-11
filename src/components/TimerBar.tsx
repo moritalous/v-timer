@@ -80,10 +80,21 @@ export function TimerBar({
               lineHeight: 1,
             }}
           >
-            <span className="text-red-500">{MOUSE}</span>
+            <span className="text-rose-500">{MOUSE}</span>
           </div>
         ) : (
           <div className="mx-auto flex min-h-0 w-fit flex-1 flex-col">
+            <div
+              aria-hidden="true"
+              className="invisible h-0 overflow-hidden whitespace-nowrap"
+              style={{
+                fontFamily: EMOJI_FONT,
+                lineHeight: 1,
+                fontSize: cheeseFontPx,
+              }}
+            >
+              <span className="px-[0.12em]">{CHEESE.repeat(cheesePerRow)}</span>
+            </div>
             {Array.from({ length: segments }, (_, i) => {
               const row = segments - 1 - i;
               const count = Math.max(
@@ -114,7 +125,7 @@ export function TimerBar({
                     </span>
                   )}
                   {isActive && (
-                    <span className="ml-[0.1em] text-gray-700 dark:text-gray-300">
+                    <span className="text-gray-700 dark:text-gray-300">
                       {MOUSE}
                     </span>
                   )}
