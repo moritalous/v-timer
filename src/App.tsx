@@ -171,7 +171,7 @@ function App() {
           <div
             className={`font-mono text-5xl font-bold tabular-nums tracking-tight ${
               finished
-                ? "animate-pulse text-red-500"
+                ? "animate-pulse text-rose-500"
                 : "text-gray-900 dark:text-gray-100"
             }`}
           >
@@ -236,7 +236,7 @@ function App() {
             running
               ? "bg-amber-600 active:bg-amber-500"
               : finished
-                ? "bg-red-600 active:bg-red-500"
+                ? "bg-rose-600 active:bg-rose-500"
                 : "bg-emerald-600 active:bg-emerald-500"
           }`}
         >
