@@ -118,7 +118,7 @@ export function TimerBar({
               const crumbStart = isActive ? count + 1 : count;
               const chip = (shown > 0 || isActive) && (
                 <span
-                  className="rounded-sm px-[0.12em] py-[0.04em]"
+                  className="inline-block rounded-sm px-[0.12em] py-[0.04em] align-bottom"
                   style={{
                     backgroundColor: segmentColor(row, segments),
                     color: segmentInk(row, segments),
