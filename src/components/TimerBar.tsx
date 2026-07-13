@@ -2,6 +2,7 @@ import {
   BITE_STEPS,
   CHEESE,
   CHEESE_ADVANCE_EM,
+  CRUMB_PATTERNS,
   EMOJI_FONT,
   FINISHED_COLOR,
   GLYPH_ADVANCE,
@@ -114,6 +115,28 @@ export function TimerBar({
               );
               const isActive = row === activeRow;
               const shown = isActive ? count - 1 : count;
+              const crumbStart = isActive ? count + 1 : count;
+              const chip = (shown > 0 || isActive) && (
+                <span
+                  className="rounded-sm px-[0.12em] py-[0.04em]"
+                  style={{
+                    backgroundColor: segmentColor(row, segments),
+                    color: segmentInk(row, segments),
+                  }}
+                >
+                  {CHEESE.repeat(Math.max(0, shown))}
+                  {isActive && (
+                    <span
+                      className="inline-block overflow-hidden whitespace-nowrap align-bottom"
+                      style={{
+                        width: `${((1 - eatenQ) * CHEESE_ADVANCE_EM).toFixed(3)}em`,
+                      }}
+                    >
+                      {CHEESE}
+                    </span>
+                  )}
+                </span>
+              );
               return (
                 <div
                   key={row}
@@ -124,36 +147,42 @@ export function TimerBar({
                     fontSize: cheeseFontPx,
                   }}
                 >
-                  {(shown > 0 || isActive) && (
+                  {isActive ? (
                     <span
-                      className="rounded-sm px-[0.12em] py-[0.04em]"
+                      className="inline-block overflow-hidden whitespace-nowrap align-bottom"
                       style={{
-                        backgroundColor: segmentColor(row, segments),
-                        color: segmentInk(row, segments),
+                        width: `${((count + 1) * CHEESE_ADVANCE_EM + 0.28).toFixed(3)}em`,
                       }}
                     >
-                      {CHEESE.repeat(Math.max(0, shown))}
-                      {isActive && (
-                        <span
-                          className="inline-block overflow-hidden whitespace-nowrap align-bottom"
-                          style={{
-                            width: `${((1 - eatenQ) * CHEESE_ADVANCE_EM).toFixed(3)}em`,
-                          }}
-                        >
-                          {CHEESE}
-                        </span>
-                      )}
+                      {chip}
+                      <span
+                        className={`inline-block origin-bottom text-gray-700 dark:text-gray-300 ${
+                          running ? "animate-munch" : ""
+                        }`}
+                      >
+                        {MOUSE}
+                      </span>
                     </span>
+                  ) : (
+                    chip
                   )}
-                  {isActive && (
-                    <span
-                      className={`inline-block origin-bottom text-gray-700 dark:text-gray-300 ${
-                        running ? "animate-munch" : ""
-                      }`}
-                    >
-                      {MOUSE}
-                    </span>
-                  )}
+                  {Array.from({ length: cheesePerRow - crumbStart }, (_, j) => {
+                    const slot = row * cheesePerRow + crumbStart + j;
+                    return (
+                      <span
+                        key={slot}
+                        aria-hidden="true"
+                        className="inline-block text-center align-middle font-sans text-amber-700 opacity-55 dark:text-amber-500"
+                        style={{
+                          width: cheeseFontPx * CHEESE_ADVANCE_EM,
+                          fontSize: "0.38em",
+                          transform: `translate(${((slot * 53) % 5) - 2}px, ${((slot * 37) % 7) - 3}px)`,
+                        }}
+                      >
+                        {CRUMB_PATTERNS[(slot * 7 + 3) % CRUMB_PATTERNS.length]}
+                      </span>
+                    );
+                  })}
                 </div>
               );
             })}
