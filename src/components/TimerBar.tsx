@@ -103,7 +103,7 @@ export function TimerBar({
                 fontSize: cheeseFontPx,
               }}
             >
-              <span className="px-[0.12em]">
+              <span className="px-[0.14em]">
                 {CHEESE.repeat(cheesePerRow + 1)}
               </span>
             </div>
@@ -149,7 +149,7 @@ export function TimerBar({
                 >
                   {isActive ? (
                     <span
-                      className="inline-block overflow-hidden whitespace-nowrap align-bottom"
+                      className="inline-block overflow-hidden text-left whitespace-nowrap align-bottom"
                       style={{
                         width: `${((count + 1) * CHEESE_ADVANCE_EM + 0.28).toFixed(3)}em`,
                       }}
