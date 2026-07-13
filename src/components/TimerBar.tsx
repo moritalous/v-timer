@@ -1,5 +1,7 @@
 import {
+  BITE_STEPS,
   CHEESE,
+  CHEESE_ADVANCE_EM,
   EMOJI_FONT,
   FINISHED_COLOR,
   GLYPH_ADVANCE,
@@ -18,6 +20,7 @@ interface TimerBarProps {
   durationMs: number;
   remainingMs: number;
   litCount: number;
+  running: boolean;
   finished: boolean;
   label: string;
   onClick: () => void;
@@ -29,6 +32,7 @@ export function TimerBar({
   durationMs,
   remainingMs,
   litCount,
+  running,
   finished,
   label,
   onClick,
@@ -43,14 +47,14 @@ export function TimerBar({
           MIN_CHEESE_PER_ROW,
           Math.min(
             MAX_CHEESE_PER_ROW,
-            Math.floor(barSize.w / (rowFontLimit * GLYPH_ADVANCE) - 0.5),
+            Math.floor(barSize.w / (rowFontLimit * GLYPH_ADVANCE) - 1.5),
           ),
         )
       : 10;
   const cheeseFontPx = Math.min(
     rowFontLimit,
     barSize.w > 0
-      ? barSize.w / ((cheesePerRow + 0.5) * GLYPH_ADVANCE)
+      ? barSize.w / ((cheesePerRow + 1.5) * GLYPH_ADVANCE)
       : rowFontLimit,
   );
   const unitMs = durationMs / (segments * cheesePerRow);
@@ -58,6 +62,11 @@ export function TimerBar({
     ? 0
     : Math.min(segments * cheesePerRow, Math.ceil(remainingMs / unitMs - 1e-6));
   const activeRow = Math.ceil(remainingUnits / cheesePerRow) - 1;
+  const activeUnitRestMs = remainingMs - (remainingUnits - 1) * unitMs;
+  const biteFraction = Math.max(0, Math.min(1, 1 - activeUnitRestMs / unitMs));
+  const eatenQ =
+    Math.min(BITE_STEPS - 1, Math.floor(biteFraction * BITE_STEPS)) /
+    BITE_STEPS;
 
   return (
     <button
@@ -93,7 +102,9 @@ export function TimerBar({
                 fontSize: cheeseFontPx,
               }}
             >
-              <span className="px-[0.12em]">{CHEESE.repeat(cheesePerRow)}</span>
+              <span className="px-[0.12em]">
+                {CHEESE.repeat(cheesePerRow + 1)}
+              </span>
             </div>
             {Array.from({ length: segments }, (_, i) => {
               const row = segments - 1 - i;
@@ -113,7 +124,7 @@ export function TimerBar({
                     fontSize: cheeseFontPx,
                   }}
                 >
-                  {shown > 0 && (
+                  {(shown > 0 || isActive) && (
                     <span
                       className="rounded-sm px-[0.12em] py-[0.04em]"
                       style={{
@@ -121,11 +132,25 @@ export function TimerBar({
                         color: segmentInk(row, segments),
                       }}
                     >
-                      {CHEESE.repeat(shown)}
+                      {CHEESE.repeat(Math.max(0, shown))}
+                      {isActive && (
+                        <span
+                          className="inline-block overflow-hidden whitespace-nowrap align-bottom"
+                          style={{
+                            width: `${((1 - eatenQ) * CHEESE_ADVANCE_EM).toFixed(3)}em`,
+                          }}
+                        >
+                          {CHEESE}
+                        </span>
+                      )}
                     </span>
                   )}
                   {isActive && (
-                    <span className="text-gray-700 dark:text-gray-300">
+                    <span
+                      className={`inline-block origin-bottom text-gray-700 dark:text-gray-300 ${
+                        running ? "animate-munch" : ""
+                      }`}
+                    >
                       {MOUSE}
                     </span>
                   )}

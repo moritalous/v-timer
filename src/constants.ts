@@ -28,6 +28,8 @@ export const CHEESE = "🧀";
 export const MOUSE = "🐁";
 export const EMOJI_FONT = "'Noto Emoji', sans-serif";
 export const GLYPH_ADVANCE = 1.3;
+export const CHEESE_ADVANCE_EM = 1.27;
+export const BITE_STEPS = 4;
 
 export const DEFAULT_SETTINGS: Settings = {
   durationSec: 10 * 60,
