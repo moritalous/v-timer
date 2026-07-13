@@ -214,6 +214,7 @@ function App() {
         durationMs={durationMs}
         remainingMs={remainingMs}
         litCount={litCount}
+        running={running}
         finished={finished}
         label={mainLabel}
         onClick={handleMainAction}
