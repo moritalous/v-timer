@@ -62,7 +62,6 @@ export function TimerBar({
     ? 0
     : Math.min(segments * cheesePerRow, Math.ceil(remainingMs / unitMs - 1e-6));
   const activeRow = Math.ceil(remainingUnits / cheesePerRow) - 1;
-  // アクティブユニットの経過割合をBITE_STEPS段階に量子化した「かじられ具合」
   const activeUnitRestMs = remainingMs - (remainingUnits - 1) * unitMs;
   const biteFraction = Math.max(0, Math.min(1, 1 - activeUnitRestMs / unitMs));
   const eatenQ =
