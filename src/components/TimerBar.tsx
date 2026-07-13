@@ -149,7 +149,7 @@ export function TimerBar({
                 >
                   {isActive ? (
                     <span
-                      className="inline-block overflow-hidden text-left whitespace-nowrap align-bottom"
+                      className="inline-block text-left whitespace-nowrap align-bottom"
                       style={{
                         width: `${((count + 1) * CHEESE_ADVANCE_EM + 0.28).toFixed(3)}em`,
                       }}
